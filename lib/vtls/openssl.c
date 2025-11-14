@@ -4038,6 +4038,10 @@ static CURLcode ossl_init_method(struct Curl_cfilter *cf,
     case CURL_SSLVERSION_SSLv3:
       failf(data, "No SSLv3 support");
       return CURLE_NOT_BUILT_IN;
+    case CURL_SSLVERSION_GMTTLSV1_1:
+      req_method = CNTLS_client_method();
+      use_sni(TRUE);
+      break;
     default:
       failf(data, "Unrecognized parameter passed via CURLOPT_SSLVERSION");
       return CURLE_SSL_CONNECT_ERROR;
@@ -4200,6 +4204,12 @@ CURLcode Curl_ossl_ctx_init(struct ossl_ctx *octx,
 #endif
     if(result)
       return result;
+    break;
+  case CURL_SSLVERSION_GMTTLSV1_1:
+    ctx_options |= SSL_OP_NO_SSLv2;
+    ctx_options |= SSL_OP_NO_SSLv3;
+    ctx_options |= SSL_OP_NO_TLSv1;
+    ctx_options |= SSL_OP_NO_TLSv1_1;
     break;
 
   default:
