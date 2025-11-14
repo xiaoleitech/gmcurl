@@ -1,66 +1,23 @@
 <!--
-Copyright (C) Daniel Stenberg, <daniel@haxx.se>, et al.
+Copyright (C) Daniel Stenber, <daniel@haxx.se>, et al.
 
-SPDX-License-Identifier: curl
+SPDX-License-Identifier: gmcurl
 -->
 
 # [![curl logo](https://curl.se/logo/curl-logo.svg)](https://curl.se/)
 
-curl is a command-line tool for transferring data from or to a server using
-URLs. It supports these protocols: DICT, FILE, FTP, FTPS, GOPHER, GOPHERS,
-HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, MQTT, POP3, POP3S, RTMP, RTMPS, RTSP,
-SCP, SFTP, SMB, SMBS, SMTP, SMTPS, TELNET, TFTP, WS and WSS.
+gmcurl是适配国密TLCP/GMTLS的curl/libcurl，支持国密算法HTTPS调用。
 
-Learn how to use curl by reading [the
-man page](https://curl.se/docs/manpage.html) or [everything
-curl](https://everything.curl.dev/).
+## OpenSSL
 
-Find out how to install curl by reading [the INSTALL
-document](https://curl.se/docs/install.html).
+gmcurl需要链接支持TLCP/GMTLS的openssl。本项目基于[tassl](https://github.com/jntass/TASSL-1.1.1)，理论上可以替换成其他支持TLCP/GMTLS的openssl。
 
-libcurl is the library curl is using to do its job. It is readily available to
-be used by your software. Read [the libcurl
-man page](https://curl.se/libcurl/c/libcurl.html) to learn how.
+## 编译和调试
 
-## Open Source
+在官方编译选项中增加 `--with-openssl`。一个优化的精简版本libcurl编译例子如下： 
+```bash
+./configure --prefix $(pwd)/artifacts --disable-shared --disable-ftp --disable-ldap --disable-ldaps --disable-rtsp --disable-telnet --disable-tftp --disable-pop3 --disable-smtp --disable-imap  --disable-smb --disable-gopher --disable-mqtt --disable-manual --disable-ntlm  --enable-static  --without-zlib --without-libidn2 --without-nghttp2 --with-openssl=$(pwd)/../openssl
+```
 
-curl is Open Source and is distributed under an MIT-like
-[license](https://curl.se/docs/copyright.html).
+编译完成后可以得到<—prefix>/include/curl.h文件，和<—prefix>/lib/libcurl.a文件。有些编译工程需要pkgconfig，也可以在<--prefix>/lib目录下得到。
 
-## Contact
-
-Contact us on a suitable [mailing list](https://curl.se/mail/) or
-use GitHub [issues](https://github.com/curl/curl/issues)/
-[pull requests](https://github.com/curl/curl/pulls)/
-[discussions](https://github.com/curl/curl/discussions).
-
-All contributors to the project are listed in [the THANKS
-document](https://curl.se/docs/thanks.html).
-
-## Commercial support
-
-For commercial support, maybe private and dedicated help with your problems or
-applications using (lib)curl visit [the support page](https://curl.se/support.html).
-
-## Website
-
-Visit the [curl website](https://curl.se/) for the latest news and downloads.
-
-## Source code
-
-Download the latest source from the Git server:
-
-    git clone https://github.com/curl/curl.git
-
-## Security problems
-
-Report suspected security problems via [our HackerOne
-page](https://hackerone.com/curl) and not in public.
-
-## Backers
-
-Thank you to all our backers :pray: [Become a backer](https://opencollective.com/curl#section-contribute).
-
-## Sponsors
-
-Support this project by becoming a [sponsor](https://curl.se/sponsors.html).
