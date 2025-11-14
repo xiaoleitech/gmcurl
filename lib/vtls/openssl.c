@@ -2922,6 +2922,9 @@ ossl_set_ssl_version_min_max(struct Curl_cfilter *cf, SSL_CTX *ctx,
 #else
     return CURLE_NOT_BUILT_IN;
 #endif
+  case CURL_SSLVERSION_GMTTLSV1_1:
+    ossl_ssl_version_min = SM1_1_VERSION;
+    ossl_ssl_version_max = TLS1_3_VERSION;
   }
 
   /* ... then, TLS max version */
@@ -2945,6 +2948,9 @@ ossl_set_ssl_version_min_max(struct Curl_cfilter *cf, SSL_CTX *ctx,
 #endif
   case CURL_SSLVERSION_MAX_NONE:  /* none selected */
   case CURL_SSLVERSION_MAX_DEFAULT:  /* max selected */
+  case CURL_SSLVERSION_GMTTLSV1_1:
+    ossl_ssl_version_max = TLS1_3_VERSION;
+    break;
   default:
     /* SSL_CTX_set_max_proto_version states that: setting the maximum to 0
        will enable protocol versions up to the highest version supported by
